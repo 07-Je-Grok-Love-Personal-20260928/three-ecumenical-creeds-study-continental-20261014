@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 """生成 index.html：python3 build.py"""
 from content import *
+from extra import *
+import add
 import html as H
-V = "v20261014-1"
+V = "v20261014-2"
 PEND = []
 TOC = []  # (l1id, l1title, [(id,title)])
 
 def L1(id, num, title, ico, lead, body):
     TOC.append((id, f"{num}、{title}", PEND[:])); PEND.clear()
-    return f'<section class="l1" id="{id}"><header class="l1h reveal"><span class="ico">{ico}</span><div><div class="kick">第{num}部分</div><h2>{num}、{title}</h2><p class="lead">{lead}</p></div></header>{body}</section>'
+    return f'<section class="l1" id="{id}"><header class="l1h reveal"><span class="ico">{ic(ico,"ic big")}</span><div><div class="kick">第{num}部分</div><h2>{num}、{title}</h2><p class="lead">{lead}</p></div></header>{body}</section>'
 def L2(id, num, title, body):
     PEND.append((id, f"{num} {title}"))
-    return f'<section class="l2 reveal" id="{id}"><h3><span class="n">{num}</span>{title}</h3>{body}</section>'
+    return f'<section class="l2 reveal" id="{id}"><h3><span class="n">{num}</span>{ic(l2icon(title))}{title}</h3>{body}</section>'
 def key(t): return f'<div class="call key"><b>🔑 重点</b>{t}</div>'
 def hard(t): return f'<div class="call hard"><b>⚠️ 难点</b>{t}</div>'
 def note(t): return f'<div class="call note"><b>📌 说明</b>{t}</div>'
@@ -19,9 +21,10 @@ def app(t): return f'<div class="call app"><b>🌱 应用</b>{t}</div>'
 def cards(items, cls="g3"):
     return f'<div class="grid {cls}">' + "".join(f'<div class="card" style="--c:{c}"><div class="ct"><span>{i}</span>{t}</div><p>{p}</p></div>' for i,t,p,c in items) + '</div>'
 def table(head, rows, cls=""):
+    if head and head[0]=="异端": rows=[[ic("alert","ic sm hz")+r[0]]+list(r[1:]) for r in rows]
     return f'<div class="tw"><table class="{cls}"><thead><tr>' + "".join(f"<th>{h}</th>" for h in head) + "</tr></thead><tbody>" + "".join("<tr>"+"".join(f"<td>{c}</td>" for c in r)+"</tr>" for r in rows) + "</tbody></table></div>"
 def timeline(items):
-    return '<ol class="tl">' + "".join(f'<li class="reveal" style="--c:{c}"><div class="yr">{y}</div><div class="tb"><b>{t}</b><p>{p}</p></div></li>' for y,t,p,c in items) + "</ol>"
+    return '<ol class="tl reveal">' + "".join(f'<li class="reveal" style="--c:{c}"><div class="yr">{ic("church" if "会议" in t else "clock","ic sm")}{y}</div><div class="tb"><b>{t}</b><p>{p}</p></div></li>' for y,t,p,c in items) + "</ol>"
 def story(items):
     return '<div class="story">' + "".join(f'<div class="st reveal"><div class="sn">{n+1}</div><b>{t}</b><p>{p}</p></div>' for n,(t,p) in enumerate(items)) + "</div>"
 def flow(steps):
@@ -88,7 +91,8 @@ def part1():
     b += L2("bible-map","1.5","从圣经到信经：教义如何“被迫”说清楚",
       flow([("圣经启示","全部真理已在其中","#5aa9e6"),("教会认信","洗礼问答、讲道","#81b29a"),("异端挑战","断章取义，换掉基督","#e07a5f"),("会议/信经","用精确词语划界","#d4af37"),("信条承接","比利时信条第9条接受","#a78bfa")])+
       note("改革宗立场：信经的权威是<b>从属的</b>（norma normata），它有权威是因为它符合圣经（比利时信条第7条：不可把任何人的著作与圣经等同；第9条：接受三信经，因其与神的话相合）。"))
-    return L1("bible","一","全本圣经视角","📖","先跳出单篇信经：看整本圣经如何讲神与基督，再看三份信经如何把它守住。", b)
+    b += L2("bible-tri","1.6","三一图：是与不是", TRINITY + key("一张图记住亚他那修信经前半：<b>三个“是”</b>（父是神、子是神、灵是神）＋<b>三个“不是”</b>（父不是子、子不是灵、灵不是父）＋<b>一个中心</b>（只有一位神）。"))
+    return L1("bible","一","全本圣经视角","book","先跳出单篇信经：看整本圣经如何讲神与基督，再看三份信经如何把它守住。", b)
 
 # ---------- 二、使徒信经 ----------
 def part2():
@@ -150,7 +154,8 @@ def part2():
       cards([("⛪","主日敬拜","许多欧陆改革宗教会在主日下午讲解海德堡问答时诵读使徒信经（约），作为会众共同的认信回应。","#5aa9e6"),
              ("👶","婴孩洗礼","荷兰改革宗洗礼礼文问父母是否承认“使徒信经所总结的教义”为真实完全的救恩教义（约）。","#81b29a"),
              ("🕯️","个人灵修","每句后问海德堡式的问题：“这对我有何益处？”","#d4af37")]))
-    return L1("apostles","二","使徒信经 Symbolum Apostolicum","🕊️","洗礼的信经：用一段叙事讲完三一神与救恩历史。", b)
+    b += add.AP(L2,table,exeg,key,hard,cards)
+    return L1("apostles","二","使徒信经 Symbolum Apostolicum","dove","洗礼的信经：用一段叙事讲完三一神与救恩历史。", b)
 
 # ---------- 三、尼西亚信经 ----------
 def part3():
@@ -212,7 +217,8 @@ def part3():
       cards([("🍞","圣餐主日","许多改革宗教会在圣餐主日诵读尼西亚信经（各教会习惯不一，约）。","#d4af37"),
              ("🧭","辨识异端","耶和华见证人称基督是“一位神”（受造的）——这正是阿里乌主义；尼西亚是现成的试金石。","#e07a5f"),
              ("🎶","敬拜对象","敬拜诗歌献给子与灵，是正当的——因为他们“同受敬拜”。","#81b29a")]))
-    return L1("nicene","三","尼西亚信经 Symbolum Nicaenum","🔥","会议的信经：用一个精确的词守住“子是真神”。", b)
+    b += add.NI(L2,table,exeg,key,hard,cards)
+    return L1("nicene","三","尼西亚信经 Symbolum Nicaenum","flame","会议的信经：用一个精确的词守住“子是真神”。", b)
 
 # ---------- 四、亚他那修信经 ----------
 def part4():
@@ -269,7 +275,8 @@ def part4():
       cards([("🧪","教理教学","最适合作中学以上的三一论与基督论教材：每两句一课。","#5aa9e6"),
              ("📚","读经工具","遇到“父比我大”“子也不知道那日子”（可13:32）这类经文，用第33句“按人性”来解读。","#d4af37"),
              ("🙇","敬畏与安慰","这份信经的冗长与重复，本身就是敬拜：在奥秘面前反复颂赞，而不是急于简化。","#81b29a")]))
-    return L1("athanasian","四","亚他那修信经 Quicunque vult","🛡️","教学的信经：把三一与二性的每一条边界逐句说清。", b)
+    b += add.AT(L2,table,exeg,key,hard,cards)
+    return L1("athanasian","四","亚他那修信经 Quicunque vult","shield","教学的信经：把三一与二性的每一条边界逐句说清。", b)
 
 # ---------- 五、比较 ----------
 def part5():
@@ -309,17 +316,23 @@ def part5():
     b += L2("cmp-lit","5.6","在改革宗礼仪中的使用",
       table(["场合","常用信经","说明"],[["主日早晨/下午敬拜","使徒信经","最普遍；会众或唱或诵（约，因教会而异）"],["圣餐主日、节期","尼西亚信经","强调基督神性与普世教会合一（约）"],["三一主日、教理课","亚他那修信经","较少在敬拜诵读，多用于教导（约）"],["洗礼与公开认信","使徒信经","荷兰改革宗洗礼礼文以信经内容为认信核心（约）"],["教理问答讲道","使徒信经","海德堡主日7–22按信经逐段讲道"]])+
       note("具体礼仪因宗派（如北美改革宗教会、荷兰改革宗、各地华人改革宗教会）而异，上表标“约”表示惯例而非统一规定。"))
-    return L1("compare","五","三大信经深度对比","⚖️","同一信仰的三种精度：叙事、定义、展开。", b)
+    b += add.CMP(L2,table,exeg,key,hard,cards,timeline)
+    return L1("compare","五","三大信经深度对比","scale","同一信仰的三种精度：叙事、定义、展开。", b)
 
 # ---------- 六、诵读版 ----------
-def reader(id, num, title, zh, en, src, sub):
-    rows = "".join(f'<li><span class="vn">{i+1}</span><div class="zh" data-cue="{H.escape(z[:2])}">{z}</div><div class="en">{e}</div></li>' for i,(z,e) in enumerate(zip(zh,en)))
-    return L2(id, num, title, f'<div class="reader" data-reader><div class="rbar"><button class="btn" data-mode="all">全文</button><button class="btn ghost" data-mode="cue">提示首字</button><button class="btn ghost" data-mode="hide">隐藏全部</button><button class="btn ghost" data-mode="en">中/英</button><span class="rhint">点任一句可单独显示/隐藏</span></div><p class="rsub">{sub}</p><ol class="verses">{rows}</ol><p class="src">来源：{src}</p></div>')
+def reader(id, num, title, zh, groups, src, sub):
+    body=""; 
+    for gt,c,a,b_ in groups:
+        body += f'<div class="vg" style="--c:{c}"><div class="vgh">{gt}<small>第{a}–{b_}句</small></div><ol class="verses" start="{a}">'
+        for k in range(a-1,b_):
+            z=zh[k]; body += f'<li><span class="vn">{k+1}</span><span class="zh" data-cue="{H.escape(z[:1])}">{z}</span></li>'
+        body += '</ol></div>'
+    return L2(id, num, title, f'<div class="reader" data-reader><div class="rbar"><button class="btn" data-mode="all">全文</button><button class="btn ghost" data-mode="cue">提示首字</button><button class="btn ghost" data-mode="hide">隐藏全部</button><span class="rhint">点任一句可单独显示／隐藏</span></div><p class="rsub">{sub}</p>{body}<p class="src">来源：{src}</p></div>')
 def part6():
-    b = reader("rd-ap","6.1","使徒信经",APOSTLES_ZH,APOSTLES_EN,"中文为华人基督教会通行的新教译本（各宗派字句略有差异，约）；英文为《公祷书》（Book of Common Prayer, 1662）传统译本，公有领域。","十二句——传统分为“十二条”。")
-    b += reader("rd-ni","6.2","尼西亚信经（尼西亚—君士坦丁堡，381）",NICENE_ZH,NICENE_EN,"中文为华人教会通行译本（多见于圣公会、信义会与改革宗教会礼文，字句略有差异，约）；英文为《公祷书》1662 传统译本（含 filioque）。1662英文首句作“I believe”，希腊原文为“我们信”。","以西方通行文本为准，含“和子”。")
-    b += reader("rd-at","6.3","亚他那修信经（全44句）",ATH_ZH,ATH_EN,"英文为《公祷书》1662 传统译本（公有领域），按改革宗通行的44句分节。中文为本站依拉丁原文与该英译对照整理的译文，用语参照华人教会流通译本，<b>非逐字照录某一出版译本</b>；礼仪诵读请以所属教会的礼文为准。","三段：1–28 三一；29–37 道成肉身；38–44 救恩工作与审判。")
-    return L1("reader","六","诵读版：三份信经全文","📜","干净排版，中英对照，可逐句遮盖背诵。", b)
+    b = reader("rd-ap","6.1","使徒信经",APOSTLES_ZH,[("圣父与创造","#5aa9e6",1,1),("圣子与救赎","#d4af37",2,7),("圣灵、教会与终末","#81b29a",8,12)],"华人基督教会通行的新教译本（各宗派字句略有差异，约）。","传统分为十二句；三段对应父、子、圣灵。")
+    b += reader("rd-ni","6.2","尼西亚信经（尼西亚—君士坦丁堡，381）",NICENE_ZH,[("圣父","#5aa9e6",1,1),("圣子：永恒的神","#d4af37",2,3),("圣子：为我们成为人","#e0a85f",4,7),("圣灵","#81b29a",8,9),("教会、洗礼与盼望","#a78bfa",10,12)],"华人教会通行译本（多见于圣公会、信义会与改革宗教会礼文，字句略有差异，约）。采西方通行文本，含“和子”。","希腊原文为“我们信”；381年原文无“和子”。")
+    b += reader("rd-at","6.3","亚他那修信经（全44句）",ATH_ZH,[("门槛：大公信仰","#e07a5f",1,2),("三一：不混不分","#5aa9e6",3,6),("三一：属性同等","#6bb8d6",7,20),("三一：起源与次序","#a78bfa",21,28),("道成肉身：一位二性","#d4af37",29,37),("救恩工作与审判","#81b29a",38,44)],"本站依拉丁原文与《公祷书》（1662）英译对照整理的中文译文，用语参照华人教会流通译本，<b>非逐字照录某一出版译本</b>；礼仪诵读请以所属教会礼文为准。按改革宗通行的44句分节。","六组：先三一（1–28），后基督（29–44）。")
+    return L1("reader","六","诵读版：三份信经全文","scroll","纯中文干净排版，按条分组，可提示首字、遮盖、点句显示。", b)
 
 # ---------- 七、记忆 ----------
 FLIPS = [("homoousios","同质：子与父同一神性本质（尼西亚325）"),("filioque","“和子”：圣灵从父和子而出；托莱多589；比利时信条第11条"),("阿里乌","“曾有一时子不存在”→ 受生而非被造"),("撒伯流","一位神三种面貌→ 不混淆位格"),("阿波利拿里","基督无人的理性灵魂→ 完全的人，具有理性的灵魂"),("涅斯多留","两位基督→ 不是两位，乃是一位"),("欧迪奇","二性混成一性→ 不是本质相混"),("马吉安","两个神→ 全能的父，创造天地的主"),("海德堡问23–58","主日7–22：逐句讲解使徒信经"),("比利时信条第9条","接受三信经"),("比利时信条第18–19条","道成肉身；二性一位"),("多特第二要点第4条","基督之死有无限价值，因他是真神真人")]
@@ -344,13 +357,13 @@ def part7():
     b += L2("mem-one","7.5","一页总结",
       table(["","使徒","尼西亚","亚他那修"],[["一句话","我们信的神做了什么","子与灵是真神","三与一、神与人的边界"],["时代","约2–8世纪","325/381","约500"],["地点","罗马→高卢","尼西亚、君士坦丁堡","南高卢"],["关键词","创造天地的主","同质","不混不分"],["对手","诺斯底、马吉安","阿里乌、阿波利拿里","撒伯流、涅斯多留、欧迪奇"],["信条","海德堡问23–58","比利时信条第8–11条","比利时信条第18–19条；多特二·4"],["应用","主日认信","圣餐与合一","教理与读经"]],"cmp")+
       key("一句话总纲：<b>三份信经都在说同一件事——拯救我们的，是三一真神中的第二位，真神又真人的耶稣基督。</b>"))
-    return L1("memory","七","记忆与自测","🧠","口诀、导图、翻卡、自测：把整站压缩进脑中。", b)
+    return L1("memory","七","记忆与自测","brain","口诀、导图、翻卡、自测：把整站压缩进脑中。", b)
 
 def part8():
     b = L2("ref-src","8.1","依据与说明",
       "<ul class='refs'><li>Philip Schaff, <i>The Creeds of Christendom</i>, vol. 1–2（1877；公有领域）——三信经原文与历史。</li><li>J. N. D. Kelly, <i>Early Christian Creeds</i>（第3版，1972）；<i>The Athanasian Creed</i>（1964）——起源与年代。</li><li>《海德堡要理问答》（1563）、《比利时信条》（1561）、《多特信经》（1618–1619）——三项联合信条，引用均为条号，文字为转述。</li><li>John Calvin, <i>Institutes</i>（1559）II.16（信经讲解）；Herman Bavinck, <i>Reformed Dogmatics</i> vol. 2–3。</li></ul>"+
       note("凡标“约”者，表示年代、作者、地点或礼仪习惯在学界或教会实践中存在不确定或差异。本站不杜撰引文；信条内容为转述，如需逐字引用请查对所属教会认可的译本。"))
-    return L1("refs","八","参考与说明","📚","来源与不确定之处。", b)
+    return L1("refs","八","参考与说明","library","来源与不确定之处。", b)
 
 body = part1()+part2()+part3()+part4()+part5()+part6()+part7()+part8()
 toc = '<nav id="toc" aria-label="目录"><div class="tochead"><b>目录</b><button id="tocx" class="btn ghost" aria-label="隐藏目录">✕</button></div><ol>'
@@ -358,8 +371,8 @@ for id,t,subs in TOC:
     toc += f'<li class="t1"><div class="t1r"><a href="#{id}">{t}</a><button class="tg" aria-label="展开或收起" aria-expanded="true">▾</button></div><ol>' + "".join(f'<li><a href="#{s}">{st}</a></li>' for s,st in subs) + "</ol></li>"
 toc += "</ol></nav>"
 hero = f'''<header class="hero"><div class="hin"><div class="badge">欧陆改革宗 · 三项联合信条视角</div><h1>三大公教会信经<br><span>使徒 · 尼西亚 · 亚他那修</span></h1><p>从整本圣经与圣约神学出发，再逐句深入。时间线、地图、异端、经文、信条，一站贯通。</p>
-<div class="trio"><a href="#apostles" class="tri" style="--c:#81b29a"><i>🕊️</i><b>使徒信经</b><small>洗礼 · 叙事 · 西方</small></a><a href="#nicene" class="tri" style="--c:#e07a5f"><i>🔥</i><b>尼西亚信经</b><small>会议 · 定义 · 东方</small></a><a href="#athanasian" class="tri" style="--c:#5aa9e6"><i>🛡️</i><b>亚他那修信经</b><small>教学 · 边界 · 高卢</small></a></div>
-<div class="hbtn"><a class="btn" href="#bible">开始阅读</a><a class="btn ghost" href="#reader">直接背诵</a></div></div></header>'''
+<div class="trio"><a href="#apostles" class="tri" style="--c:#81b29a"><i>{ic("dove","ic big")}</i><b>使徒信经</b><small>洗礼 · 叙事 · 西方</small></a><a href="#nicene" class="tri" style="--c:#e07a5f"><i>{ic("flame","ic big")}</i><b>尼西亚信经</b><small>会议 · 定义 · 东方</small></a><a href="#athanasian" class="tri" style="--c:#5aa9e6"><i>{ic("shield","ic big")}</i><b>亚他那修信经</b><small>教学 · 边界 · 高卢</small></a></div>
+<div class="stats"><div><b data-count="3">3</b><small>份大公信经</small></div><div><b data-count="44">44</b><small>句亚他那修信经</small></div><div><b data-count="381">381</b><small>年君士坦丁堡</small></div><div><b data-count="36">36</b><small>个海德堡问答（问23–58）</small></div></div><div class="hbtn"><a class="btn" href="#bible">开始阅读</a><a class="btn ghost" href="#reader">直接背诵</a></div></div></header>'''
 page = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>三大公教会信经 · 欧陆改革宗深读 {V}</title><meta name="description" content="使徒信经、尼西亚信经、亚他那修信经：圣经神学、圣约神学、历史、地理与逐句解读"><link rel="stylesheet" href="assets/styles.css?v={V}"></head><body>
 {toc}<button id="tocbtn" class="fab" aria-label="显示目录" aria-controls="toc">☰ 目录</button><div id="prog"></div>
 <main id="main">{hero}{body}<footer class="foot"><p>三大公教会信经 · 欧陆改革宗深读 · <b>{V}</b></p><p>以圣经为最高权威；信经与信条为从属标准。</p></footer></main>
