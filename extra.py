@@ -24,7 +24,7 @@ P = {
 def ic(n, cls="ic"):
     return f'<svg class="{cls}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{P[n]}</svg>'
 def l2icon(title):
-    for k,v in [("时间线","clock"),("故事","scroll"),("地理","map"),("异端","alert"),("为什么","key"),("解读","book"),("信条","scale"),("应用","leaf"),("人物","users"),("误解","alert"),("牧养","heart"),("词义","quill"),("三一","tri"),("改革者","church"),("对照","scale"),("圣约","link"),("三约","link"),("礼仪","church"),("诵读","scroll"),("信经","scroll"),("口诀","brain"),("导图","brain"),("翻卡","brain"),("自测","key"),("总结","book")]:
+    for k,v in [("时间线","clock"),("故事","scroll"),("地理","map"),("异端","alert"),("为什么","key"),("解读","book"),("信条","scale"),("应用","leaf"),("人物","users"),("误解","alert"),("牧养","heart"),("词义","quill"),("三一","tri"),("改革者","church"),("对照","scale"),("圣约","link"),("三约","link"),("礼仪","church"),("诵读","scroll"),("信经","scroll"),("口诀","brain"),("导图","brain"),("翻卡","brain"),("自测","key"),("总结","book"),("原文","scroll"),("全文","scroll"),("比较","scale"),("三圈","tri"),("分层","book"),("交叉","link"),("陈述","church"),("转述","book"),("译本","quill"),("编号","quill"),("脚注","link"),("我属于","heart"),("使用","church"),("来源","library"),("参考网站","library"),("没有找到","alert"),("版本","clock"),("导言","book"),("分组","scroll")]:
         if k in title: return v
     return "cross"
 
@@ -50,7 +50,7 @@ AP_WORDS = [["Credo in Deum","我信（入）上帝","in＋宾格：信靠、投
  ["passus sub Pontio Pilato","在彼拉多手下受难","sub＝在……任内：历史日期标记"],
  ["descendit ad inferos（inferna）","降在阴间","textus receptus 用 inferos；鲁菲努所载阿奎莱亚本作 inferna（约）"],
  ["sanctam ecclesiam catholicam","圣而公之教会","catholica＝“按整体的”，普世、完整"],
- ["sanctorum communionem","圣徒相通","sanctorum 可作阳性（圣徒）或中性（圣物/圣礼）；改革宗（海德堡问55）取“与基督及彼此相交”"],
+ ["sanctorum communionem","圣徒相通","sanctorum 可作阳性（圣徒）或中性（圣物/圣礼）；改革宗（海德堡问55）取“圣徒”之义：信徒共同有份于基督与他一切的恩赐，并当乐意、甘心使用恩赐造就彼此（据CCI问55意译）"],
  ["carnis resurrectionem","身体（肉身）复活","拉丁原文是 caro（肉身），强调就是这身体复活，非抽象灵体"]]
 NI_WORDS = [["pisteuomen","我们信","会议的集体认信；西方礼仪后改单数 credo（约）"],
  ["monogenē","独生","约1:14、18；3:16"],
