@@ -78,7 +78,7 @@ def layers():
     items=[]
     for lab,d in TOP:
         lay=1 if "A" in d else (2 if "N" in d else 3)
-        who="".join(NAME[k][0] for k in "ANT" if k in d)
+        who="、".join({"A":"使徒","N":"尼西亚","T":"亚他那修"}[k] for k in "ANT" if k in d)
         items.append((lay,lab,who))
     s='<div class="lyr" data-layers><div class="lyrbar"><label for="lyr-r">叠加层：</label><input id="lyr-r" type="range" min="1" max="3" value="3" aria-label="叠加层数"><output id="lyr-o">三层全开</output>'
     s+='<span class="lyrk"><i style="--c:#81b29a"></i>第1层 使徒</span><span class="lyrk"><i style="--c:#e07a5f"></i>第2层 尼西亚新增</span><span class="lyrk"><i style="--c:#5aa9e6"></i>第3层 亚他那修新增</span></div><div class="lyrgrid">'

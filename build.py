@@ -325,19 +325,19 @@ def sources():
         ["《烛台宣言》3.3","对“教义是僵死传统”看法的反对条款（5.11）",A(C+"/books/the-candlestand-statement/3-3","candlestand-statement/3-3")],
         ["《真理的火焰》第1、4、9、12、17章","儿童教会史读物：第4章（亚他那修的故事）、第9章（“大公”之意）、第12章（对照海德堡问80与威斯敏斯特大要理问答问170）、第17章（亚流与三位一体）",A(C+"/books/flame-of-truth/9","flame-of-truth/…")]],"cmp")
       + note("我们没有逐字收录 CCI 的《我属于》课文、仪文全文与图书全文，以免大段复制；需要时请直接阅读原页。"))
-    ref=[("ccreformed.org（洛杉矶恩约教会）","信仰页：恩约教会隶属 URCNA，认信三联合信条（1561、1563、1619），并说信仰“连接在古代大公教会的主干之上”","https://ccreformed.org/"),
-      ("reformedbeginner.net（改革宗初学者）","“大公信经”专页：统称使徒、尼西亚、亚他那修与迦克墩；三信经中文译本（用于译本对照，见3.13、4.11）","https://www.reformedbeginner.net/"),
-      ("canrc.org（加拿大归正教会）","Beliefs 页（英文）：采纳三大信经与三大信条；人的文件只有人的权威，唯有神的话语有神圣权威","https://www.canrc.org/"),
-      ("urcna.org（北美联合改革宗）","Ecumenical Creeds 页与三份信经页（英文）：信经用于见证、教导与敬拜；信经页上的脚注把“降在阴间”“大公”等连到信条（4.12）","https://www.urcna.org/"),
-      ("heritagereformed.com","Doctrinal Standards 页（英文）：以三大古代信经与三项联合信条表达信仰","https://www.heritagereformed.com/"),
-      ("prca.org（美国抗议宗改革宗）","<b>仅取自搜索结果摘录</b>（网站直接抓取被验证页拦截）：采纳三份信经，另加迦克墩信经，理由是其教义已体现在 BC 19","https://www.prca.org/"),
-      ("opc.org（正统长老会）","WCF、WLC、WSC 英文原文页（见第六部分的对照）","https://www.opc.org/"),
-      ("canadianreformedseminary.ca（CRTS）","神学院使命与课程介绍页（英文），仅作背景","https://www.canadianreformedseminary.ca/"),
-      ("wts.edu（威斯敏斯特神学院）","使命与价值观页（英文），仅作背景","https://www.wts.edu/"),
-      ("crts.edu（改革宗神学院，华语）","学院首页与介绍（繁体），仅作背景","https://www.crts.edu/")]
+    ref=[("ccreformed.org（洛杉矶恩约教会）","信仰页：恩约教会隶属 URCNA，认信三联合信条（1561、1563、1619），并说信仰“连接在古代大公教会的主干之上”","https://www.ccreformed.org/our-belief/"),
+      ("reformedbeginner.net（改革宗初学者）","“大公信经”专页：统称使徒、尼西亚、亚他那修与迦克墩；三信经中文译本（用于译本对照，见3.13、4.11）","https://www.reformedbeginner.net/ecumenical-creeds/"),
+      ("canrc.org（加拿大归正教会）","Beliefs 页（英文）：采纳三大信经与三大信条；人的文件只有人的权威，唯有神的话语有神圣权威","https://canrc.org/beliefs"),
+      ("urcna.org（北美联合改革宗）","Ecumenical Creeds 页与三份信经页（英文）：信经用于见证、教导与敬拜；信经页上的脚注把“降在阴间”“大公”等连到信条（4.12）","https://www.urcna.org/creeds"),
+      ("heritagereformed.com","Doctrinal Standards 页（英文）：以三大古代信经与三项联合信条表达信仰","https://heritagereformed.com/about-the-hrc/doctrinal-standards-and-worship/"),
+      ("prca.org（美国抗议宗改革宗）","<b>仅取自搜索结果摘录</b>（网站直接抓取被验证页拦截）：采纳三份信经，另加迦克墩信经，理由是其教义已体现在 BC 19","https://www.prca.org/about/official-standards/creeds"),
+      ("opc.org（正统长老会）","WCF、WLC、WSC 英文原文页（见第六部分的对照）","https://opc.org/standards.html"),
+      ("canadianreformedseminary.ca（CRTS）","神学院使命与课程介绍页（英文），仅作背景","https://canadianreformedseminary.ca/about/discover-crts/"),
+      ("wts.edu（威斯敏斯特神学院）","使命与价值观页（英文），仅作背景","https://www.wts.edu/about/mission-values"),
+      ("crts.edu（改革宗神学院，华语）","学院首页与介绍（繁体），仅作背景","https://crts.edu/en/intro/")]
     b += L2("src-ref","12.3","参考网站：只转述我们读到的",
       '<p>下列网站我们读了相关页面，只<b>转述并注明出处</b>；没有读到的联系，我们不假设。</p>'
-      + table(["网站","本站使用的内容","链接"],[[n,w,A(u,u.split("//")[1].strip("/"))] for n,w,u in ref],"cmp"))
+      + table(["网站","本站使用的内容","链接"],[[n,w,A(u,u.split("//")[1].replace("www.","").strip("/"))] for n,w,u in ref],"cmp"))
     miss=D("ib_summaries") if False else json.load(open("data/ib_summaries.json",encoding="utf-8"))
     nomi=[int(k[3:]) for k,v in miss if not v]
     b += L2("src-miss","12.4","CCI 上没有找到的内容",

@@ -175,3 +175,4 @@ th{background:rgba(212,175,55,.16);color:var(--gold2);white-space:nowrap}tr:nth-
 .vcard{text-decoration:none;color:var(--tx);display:block}.vcard:hover{transform:translateY(-3px)}
 @media(prefers-reduced-motion:reduce){.rf,.bar i,.lyi{transition:none!important}}
 @media print{.ptabs,.pager{display:none}}
+@media(max-width:600px){.map{overflow-x:auto;-webkit-overflow-scrolling:touch}.map svg{min-width:480px}.map figcaption{position:sticky;left:0;max-width:calc(100vw - 80px)}}
