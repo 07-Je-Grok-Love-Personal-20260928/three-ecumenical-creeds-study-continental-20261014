@@ -3,6 +3,7 @@
 from content import *
 from extra import *
 import add, more, xref, libs, westm, json, re, os
+import creedstruct as CS
 from quotes import BC, HC, DORT, SRC
 import html as H
 from core import *
@@ -44,7 +45,8 @@ def part1():
 
 # ---------- 二、使徒信经 ----------
 def part2():
-    b = L2("ap-tl","2.1","时间线：从洗礼问答到通行本",
+    b = CS.struct_ap()
+    b += L2("ap-tl","2.2","时间线：从洗礼问答到通行本",
       timeline([("约1世纪","新约中的认信公式","林前15:3–5；腓2:6–11；提前3:16；罗10:9 “耶稣是主”。洗礼时奉三一之名（太28:19）。","#81b29a"),
        ("约150–200","信仰准则 regula fidei","爱任纽（里昂，约180《驳异端》）、特土良（迦太基，约200）记载的信仰准则，与使徒信经结构高度相近。","#5aa9e6"),
        ("约215","洗礼三问（约）","传为希坡律陀《使徒传统》所载：“你信……父吗？……子吗？……圣灵吗？”作者与年代学界有争议，故标“约”。","#a78bfa"),
@@ -108,7 +110,8 @@ def part2():
 
 # ---------- 三、尼西亚信经 ----------
 def part3():
-    b = L2("ni-tl","3.1","时间线：325 → 381 → 589 → 1054",
+    b = CS.struct_ni()
+    b += L2("ni-tl","3.2","时间线：325 → 381 → 589 → 1054",
       timeline([("约318","阿里乌争论爆发","亚历山大城长老阿里乌主张：“曾有一时，子不存在”；主教亚历山大将其革除（约318–321）。","#e07a5f"),
        ("325","第一次尼西亚会议","君士坦丁召开，约250–318位主教（数字为传统说法）。采纳 homoousios（同质），附咒诅条款。亚他那修以执事身份随行。","#d4af37"),
        ("328–373","亚他那修五次被流放","作为亚历山大主教为尼西亚信仰奋斗，被流放五次（传统计数）。“亚他那修对抗全世界”。","#5aa9e6"),
@@ -172,7 +175,8 @@ def part3():
 
 # ---------- 四、亚他那修信经 ----------
 def part4():
-    b = L2("at-tl","4.1","时间线：Quicunque 的来历",
+    b = CS.struct_at()
+    b += L2("at-tl","4.2","时间线：Quicunque 的来历",
       timeline([("296–373","亚他那修本人","亚历山大主教、尼西亚信仰的捍卫者；但他用希腊文写作，此信经是拉丁文，且用语晚于他的时代。","#5aa9e6"),
        ("430–451","基督论争论","以弗所会议（431）定罪涅斯多留；迦克墩会议（451）定罪欧迪奇，宣告“二性……不相混、不改变、不分割、不分离”。","#e07a5f"),
        ("约5世纪末–6世纪初","在南高卢写成（约）","学界多认为出自南高卢，可能与勒兰修道院传统或阿尔勒的该撒留（约470–542）圈子有关（约）。用语深受奥古斯丁《论三位一体》影响。","#d4af37"),
@@ -277,6 +281,29 @@ QUIZ = [("“受生却非被造”主要针对谁？",["撒伯流","阿里乌","
 ("海德堡要理问答讲解使徒信经的问答是？",["问1–22","问23–58","问59–85"],1),("比利时信条哪一条接受三信经？",["第9条","第19条","第37条"],0),
 ("“基督仍是一位，而非两位”对抗？",["涅斯多留","欧迪奇","阿里乌"],0),("“降在阴间”海德堡问44解释为？",["基督到地狱传道","基督承受地狱般的痛苦与被弃","只是埋葬"],1),
 ("“具有人的灵魂和肉体的完全的人”对抗？",["阿波利拿里","马吉安","撒伯流"],0),("改革宗接受信经的根据是？",["教会权威","与圣经相合","作者是使徒"],1)]
+
+def mem_titles():
+    import creedlib as CL
+    from c_titles import HC52,PART_RANGE
+    PC={"总纲":"p0","困苦":"p1","拯救":"p2","感恩":"p3"}
+    def mi(key,cls,href,b,t,sm):
+        return f'<div class="mi {cls}" data-k="{key}"><a href="{href}"><b>{b}</b>{t}<small>{sm}</small></a><input type="checkbox" aria-label="已背熟：{b} {t}"></div>'
+    def ring(label):
+        return f'<div class="mring" data-mring="{label}"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rb"/><circle cx="60" cy="60" r="52" class="rf" pathLength="100" stroke-dasharray="0 100"/></svg><div><b class="mn1">0</b> / <b class="mn2">0</b> 已背熟<br><small>勾选保存在本机浏览器（localStorage），不上传。</small></div></div>'
+    out=""
+    x=ring("cr")+'<p>三份信经按条／节／组各一个标题；点标题跳到背诵版（一行一句），勾选“已背熟”。</p>'
+    for key_,lab,pref,T,pts in [("ap","使徒信经 · 12 条","ap",CL.AP_TITLES,CL.AP_PARTS),("ni","尼西亚信经 · 13 节","ni",CL.NI_TITLES,CL.NI_PARTS)]:
+        items="".join(mi(f"cr-{key_}{n}","p%d"%(i%4),f"creeds.html#{pref}-a{n}",f"第{n}",T[n][0],T[n][2]) for i,(pn,pt,pico,nos) in enumerate(pts) for n in nos)
+        x+=L3(f"mm-{key_}",lab,f'<div class="mst">{items}</div>',"list",cls="mmg")
+    items="".join(mi(f"cr-at{g}","p%d"%(i%4),f"creeds.html#at-g{g}",f"{lo}–{hi}",nm,f"{hi-lo+1} 点") for i,(g,(nm,lo,hi,gi)) in enumerate(CL.AT_GROUPS.items()))
+    x+=L3("mm-at","亚他那修信经 · 11 组",f'<div class="mst">{items}</div>',"list",cls="mmg")
+    out+=L2("mem-cr","11.2","三大信经条目速记（可勾选“已背熟”）",x)
+    x=ring("hc")+'<p>海德堡 52 主日的主题标题（与三项联合信条站、本站海德堡部分使用同一份标题）。</p>'
+    for part,lab,lo,hi in PART_RANGE:
+        items="".join(mi(f"hc{n}",PC[part],f"hc.html#ld{n}",f"主日{n}",HC52[n][0],HC52[n][2]).replace('<div class="mi','<div id="mm-ld%d" class="mi'%n,1) for n in range(lo,hi+1))
+        x+=L3(f"mm-p{PC[part]}",f"{lab}（主日{lo}"+(f"–{hi}" if hi!=lo else "")+"）",f'<div class="mst">{items}</div>',"list",cls="mmg")
+    out+=L2("mem-52","11.3","海德堡 52 主日标题速记（可勾选）",x)
+    return out
 def part7():
     b = L2("mem-mn","11.1","口诀",
       '<div class="mn reveal"><p><b class="hl-g">使徒讲故事</b>，<b class="hl-s">尼西亚定本质</b>，<b class="hl-f">亚他那修划边界</b>。</p><p>三段：<b>父造 · 子救 · 灵圣</b>。</p><p>尼西亚四句承重墙：<b>出神为神 · 出光为光 · 受生非造 · 与父同质</b>。</p><p>亚他那修两个“不”：<b>不混位格，不分本质</b>；四个“不是”：<b>不是两位，不是变成，不是相混，不是三神</b>。</p><p>年份：<b>325 尼西亚 · 381 君堡 · 431 以弗所 · 451 迦克墩 · 589 托莱多</b>——“三二五、三八一，四三一、四五一，五八九加和子”。</p><p>信条坐标：<b>海德堡23–58，比利时8–11、18–19，多特二·4</b>。</p></div>'+
@@ -287,6 +314,7 @@ def part7():
       ("🛡️ 亚他那修",["约500 · 南高卢","三一＋二性","对涅斯多留、欧迪奇","比利时信条第18–19条"],"#5aa9e6"),
       ("📖 圣经根基",["创造—堕落—救赎—成全","救赎之约 · 行为之约 · 恩典之约","中保须真神真人"],"#d4af37"),
       ("⚖️ 比较",["精度不同，信仰相同","同心圆发展","比利时信条第9条"],"#a78bfa")]) + "</div></div>"
+    b += mem_titles()
     b += L2("mem-mind","11.2","思维导图", mind)
     b += L2("mem-flip","11.3","翻卡（点击翻面）", '<div class="flips">' + "".join(f'<button class="flip reveal" aria-pressed="false"><span class="fi"><span class="ff">{a}</span><span class="fb">{c}</span></span></button>' for a,c in FLIPS) + '</div><p class="fcount">已翻 <b id="fc">0</b> / '+str(len(FLIPS))+'</p>')
     b += L2("mem-quiz","11.4","自测（10题）", '<div class="quiz">' + "".join(f'<div class="qq reveal" data-ans="{a}"><p><b>{i+1}.</b> {q}</p><div class="opts">' + "".join(f'<button class="opt" data-i="{j}">{o}</button>' for j,o in enumerate(os)) + '</div></div>' for i,(q,os,a) in enumerate(QUIZ)) + '</div><p class="score">得分：<b id="qs">0</b> / 10 <button class="btn ghost" id="qreset">重做</button></p>')
@@ -352,7 +380,7 @@ def sources():
       "<ul class='refs'><li>Philip Schaff, <i>The Creeds of Christendom</i>, vol. 1–2（1877；公有领域）。</li><li>J. N. D. Kelly, <i>Early Christian Creeds</i>（第3版，1972）；<i>The Athanasian Creed</i>（1964）。</li><li>John Calvin, <i>Institutes</i>（1559）II.16；Herman Bavinck, <i>Reformed Dogmatics</i> vol. 2–3。</li></ul>"
       + note("凡标“约”者，表示年代、作者、地点或礼仪习惯在学界或教会实践中存在不确定或差异。需要逐字核对信经与信条，请读第七至第十部分的 CCI 原文库。"))
     b += L2("src-ver","12.6","版本记录",
-      '<ul class="refs"><li><b>v20261014-4</b>：多页结构；逐字收录三信经与三项联合信条；CCI 内容转述；参考网站；威斯敏斯特对照；三圈图、分层揭示、信条交叉引用图；进度记录。</li><li>v20261014-3：单页；亚他那修信经 CCI 全文；信条引文核对。</li><li>v20261014-2：纯中文、加深讲解、更多动画与图标。</li><li>v20261014-1：首版。</li></ul>')
+      '<ul class="refs"><li><b>v20261014-5</b>：二、三、四部分新增“结构目录”（使徒信经 12 条、尼西亚 13 节、亚他那修 42 点 11 组，各为三级标题，附 CCI 原文句、一句话与对照链接）；第七部分重做为背诵版（一行一句，原文不改，全显／首字提示／全遮／逐行跟读）；三项联合信条各部分改为三级标题，海德堡 52 主日用统一标题；记忆页增加可勾选速记表；动画、图标与排版细化。标题与“一句话”为本站学习用语，不是 CCI 原文。</li><li><b>v20261014-4</b>：多页结构；逐字收录三信经与三项联合信条；CCI 内容转述；参考网站；威斯敏斯特对照；三圈图、分层揭示、信条交叉引用图；进度记录。</li><li>v20261014-3：单页；亚他那修信经 CCI 全文；信条引文核对。</li><li>v20261014-2：纯中文、加深讲解、更多动画与图标。</li><li>v20261014-1：首版。</li></ul>')
     return L1("sources","十二","来源与说明","library","哪些是逐字收录、哪些是转述、哪些在 CCI 上没有找到。", b)
 
 # ---------- 页面注册 ----------
@@ -364,8 +392,9 @@ PARTS={"bible":part1,"apostles":part2,"nicene":part3,"athanasian":part4,"compare
  "creeds":libs.part_creeds,"bc":libs.part_bc,"hc":libs.part_hc,"dort":libs.part_dort,"memory":part7,"sources":sources}
 FILE={k:f for k,f,_,_ in PAGES}; LABEL={k:t for k,_,t,_ in PAGES}
 BODY={}
+L1N={"bible":1,"apostles":2,"nicene":3,"athanasian":4,"compare":5,"westminster":6,"creeds":7,"bc":8,"hc":9,"dort":10,"memory":11,"sources":12}
 for k,_,_,_ in PAGES[1:]:
-    CUR["f"]=FILE[k]; BODY[k]=PARTS[k]()
+    CUR["f"]=FILE[k]; CUR["n"]=L1N[k]; CUR["c2"]=0; BODY[k]=PARTS[k]()
 
 # ---------- 链接重写：#id → file#id ----------
 IDS={}
@@ -386,7 +415,12 @@ def toc_html(cur):
     t+='<a class="tochome'+(' on' if cur=="index" else '')+'" href="index.html">🏠 首页 · 学习路径与进度</a><ol>'
     for id,title,subs,f in TOC:
         page=[k for k,ff in FILE.items() if ff==f][0]
-        t+=f'<li class="t1{" cur" if page==cur else ""}" data-page="{page}"><div class="t1r"><a href="{f}#{id}">{title}</a><button class="tg" type="button" aria-label="展开或收起" aria-expanded="true">▾</button></div><ol>'+"".join(f'<li><a href="{f}#{s}">{st}</a></li>' for s,st in subs)+"</ol></li>"
+        def sub(s):
+            sid,st,kids=s
+            if not kids: return f'<li class="t2"><a href="{f}#{sid}">{st}</a></li>'
+            return (f'<li class="t2 has closed"><div class="t2r"><a href="{f}#{sid}">{st}</a><button class="tg2" type="button" aria-label="展开或收起三级标题" aria-expanded="false">▾</button></div><ol>'
+                    +"".join(f'<li class="t3"><a href="{f}#{i}">{tt}</a></li>' for i,tt in kids)+"</ol></li>")
+        t+=f'<li class="t1{" cur" if page==cur else ""}" data-page="{page}"><div class="t1r"><a href="{f}#{id}">{title}</a><button class="tg" type="button" aria-label="展开或收起" aria-expanded="true">▾</button></div><ol>'+"".join(sub(s) for s in subs)+"</ol></li>"
     return t+"</ol></nav>"
 def tabs(cur):
     return '<nav class="ptabs" aria-label="页面导航">'+"".join(f'<a href="{f}"{" class=on aria-current=page" if k==cur else ""}>{t}</a>' for k,f,t,_ in PAGES)+'</nav>'
@@ -419,13 +453,13 @@ def index_body():
     hero=f'''<header class="hero"><div class="hin"><div class="badge">欧陆改革宗 · 三项联合信条视角</div><h1>三大公教会信经<br><span>使徒 · 尼西亚 · 亚他那修</span></h1><p>从整本圣经与圣约神学出发，逐句深入三份古代信经，并把它们与比利时信条、海德堡要理问答、多特信经连起来。信经与信条原文<b>逐字取自 CCI《赞美手册》中文版</b>。</p>
 <div class="trio"><a href="apostles.html" class="tri" style="--c:#81b29a"><i>{ic("dove","ic big")}</i><b>使徒信经</b><small>洗礼 · 叙事 · 西方</small></a><a href="nicene.html" class="tri" style="--c:#e07a5f"><i>{ic("flame","ic big")}</i><b>尼西亚信经</b><small>会议 · 定义 · 东方</small></a><a href="athanasian.html" class="tri" style="--c:#5aa9e6"><i>{ic("shield","ic big")}</i><b>亚他那修信经</b><small>教学 · 边界 · 高卢</small></a></div>
 <div class="stats"><div><b data-count="3">3</b><small>份大公信经（原文）</small></div><div><b data-count="{bcn}">{bcn}</b><small>条比利时信条</small></div><div><b data-count="{nq}">{nq}</b><small>问海德堡要理问答</small></div><div><b data-count="{dn}">{dn}</b><small>项多特信经条文</small></div></div>
-<div class="hbtn"><a class="btn" href="bible.html">开始阅读：全本圣经视角</a><a class="btn ghost" href="creeds.html#rd-ap">直接背诵</a><a class="btn ghost" href="compare.html#cmp-venn">三圈重叠图</a></div></div></header>'''
+<div class="hbtn"><a class="btn" href="bible.html">开始阅读：全本圣经视角</a><a class="btn ghost" href="creeds.html#cr-ap">直接背诵</a><a class="btn ghost" href="compare.html#cmp-venn">三圈重叠图</a></div></div></header>'''
     prog='''<section class="l1" id="path"><header class="l1h reveal"><span class="ico">'''+ic("map","ic big")+'''</span><div><div class="kick">学习路径</div><h2>十二站学习路径与进度</h2><p class="lead">建议顺序：先读圣经，再读三份信经，然后比较与对照，最后读原文库、背诵与自测。进度只保存在你的浏览器里（localStorage），不上传。</p></div></header>
 <div class="progbox reveal"><div class="ring2" id="ringbox"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rb"/><circle cx="60" cy="60" r="52" class="rf" id="ringf" pathLength="100" stroke-dasharray="0 100"/></svg><div class="rt"><b id="ringn">0%</b><small>已读小节</small></div></div><div class="pinfo"><p>已读 <b id="readn">0</b> / <b id="readt">0</b> 个小节（滚动到小节即记为已读）。自测最近得分：<b id="quizs">未做</b>。</p><p><button class="btn ghost" id="resetp" type="button">清除进度</button></p></div></div>
 <div class="steps">'''+steps+'''</div></section>'''
     vis=[("🗺️","SVG 地图与路线","使徒、尼西亚、亚他那修各有一幅地图，路线会“画”出来。","apostles.html#ap-geo"),("🧭","时间线","每份信经一条动画时间线。","apostles.html#ap-tl"),("🔱","三一图","“是”与“不是”的盾形图。","bible.html#bible-tri"),
          ("⭕","三圈重叠图","谁讲了什么：点区域看对应句。","compare.html#cmp-venn"),("🧅","分层揭示","拖动滑杆，一层层加厚护栏。","compare.html#cmp-layer"),("🕸️","信条交叉引用图","信经句 ➜ 三项联合信条条款。","compare.html#cmp-xmap"),
-         ("🧠","思维导图 · 翻卡","口诀、导图、翻卡，帮助记忆。","memory.html#mem-mind"),("📝","自测","10 题，即时对错。","memory.html#mem-quiz"),("🎙️","诵读工具","全文 / 提示首字 / 隐藏全部。","creeds.html#rd-ap")]
+         ("🧠","思维导图 · 翻卡","口诀、导图、翻卡，帮助记忆。","memory.html#mem-mind"),("📝","自测","10 题，即时对错。","memory.html#mem-quiz"),("🎙️","诵读工具","全文 / 提示首字 / 隐藏全部。","creeds.html#cr-ap")]
     v="".join(f'<a class="card vcard" href="{u}" style="--c:#d4af37"><div class="ct"><span>{i}</span>{t}</div><p>{p}</p></a>' for i,t,p,u in vis)
     guide='''<section class="l2 reveal" id="idx-vis"><h3><span class="n">·</span>'''+ic("star" if "star" in P else "cross")+'''本站的视觉与互动工具</h3><div class="grid g3">'''+v+'''</div>
 '''+key("<b>读法：</b>每个部分的左侧目录都可以收起；没有 JavaScript 时所有内容仍然全部可见。颜色约定：<span class=hl-f>蓝＝父</span>、<span class=hl-s>金＝子</span>、<span class=hl-g>绿＝圣灵</span>。")+note("信经与信条原文来自 CCI；讲解、图表与比较是本站的学习材料。哪些是逐字、哪些是转述、哪些 CCI 上没有，见"+'<a href="sources.html">第十二部分</a>。')+'</section>'
