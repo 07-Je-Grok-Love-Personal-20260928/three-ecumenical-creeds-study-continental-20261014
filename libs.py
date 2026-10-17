@@ -16,6 +16,27 @@ def chips(items):
 def refs_ol(lst):
     if not lst: return ""
     return "".join(f'<span class="rf1" role="listitem"><b class="nb">{i}</b>{H.escape(x)}</span>' for i,x in enumerate(lst,1))
+def rrow(label,lst):
+    return f'<div class="refs2 rq" role="list" aria-label="{H.escape(label)} 经文参考"><span class="fnh">{H.escape(label)}</span>'+refs_ol(lst)+'</div>'
+def rdet(summary,rows,total):
+    if not rows: return ""
+    return (f'<details class="rfd"><summary><span class="rfi">📖</span> {H.escape(summary)}<small>共 {total} 条</small></summary>'
+            +"".join(rrow(l,x) for l,x in rows)+'</details>')
+def hc_rows(ld):
+    rows=[];q=None
+    for b in J("hc")["lds"][ld-1]["blocks"]:
+        if b["t"]=="h4": q=re.match(r"\s*(\d+)",b["x"]).group(1)
+        elif b["t"]=="ref": rows.append((f"问{q}",b["x"]))
+    return rows
+def hc_proof(id,num,title,lds,lead):
+    """在信经页嵌入：海德堡对应主日的经文参考（紧凑行，逐字取自 CCI）。lds=[(主日,说明)]"""
+    x=f'<p>{lead}</p>'
+    for n,note in lds:
+        rows=hc_rows(n); tot=sum(len(l) for _,l in rows)
+        q=[int(re.match(r"\s*(\d+)",b["x"]).group(1)) for b in J("hc")["lds"][n-1]["blocks"] if b["t"]=="h4"]
+        qs=f"问{q[0]}"+(f"–{q[-1]}" if q[-1]!=q[0] else "")
+        x+=f'<div class="rfh"><b>主日{n}</b><span>{H.escape(HC52[n][0])}</span><em>{H.escape(note)}</em><a href="hc.html#ld{n}">{qs} 全文 ↗</a></div>'+rdet(f"{qs} 经文参考",rows,tot)
+    return L2(id,num,title,x)
 def blocks_html(bl):
     out=""
     for b in bl:
