@@ -5,6 +5,7 @@ from extra import *
 import add, more, xref, libs, westm, json, re, os
 from c_cm import core_l2
 import creedstruct as CS
+import c_whole as CW
 from quotes import BC, HC, DORT, SRC
 import html as H
 from core import *
@@ -48,7 +49,7 @@ def part1():
 
 # ---------- 二、使徒信经 ----------
 def part2():
-    b = CS.struct_ap()
+    b = CW.pagecore('三条线记住使徒信经：创造的父 → 成就的子 → 施行的灵；12 条，3 段。','“造—救—施”＋“教会·赦罪·复活”','“降在阴间”与“公教会”最易误读（见逐句解读与常见误解）。')+CW.whole_ap()+CS.struct_ap()
     b += L2("ap-tl","2.2","时间线：从洗礼问答到通行本",
       timeline([("约1世纪","新约中的认信公式","林前15:3–5；腓2:6–11；提前3:16；罗10:9 “耶稣是主”。洗礼时奉三一之名（太28:19）。","#81b29a"),
        ("约150–200","信仰准则 regula fidei","爱任纽（里昂，约180《驳异端》）、特土良（迦太基，约200）记载的信仰准则，与使徒信经结构高度相近。","#5aa9e6"),
@@ -119,7 +120,7 @@ def part2():
 
 # ---------- 三、尼西亚信经 ----------
 def part3():
-    b = CS.struct_ni()
+    b = CW.pagecore('一句话：子与父同质，灵与父子同受敬拜；13 节，4 段。','“一位神·一位主·一位灵·一个教会”','“和子”句（filioque）与“同质”一词的含义。')+CW.whole_ni()+CS.struct_ni()
     b += L2("ni-tl","3.2","时间线：325 → 381 → 589 → 1054",
       timeline([("约318","阿里乌争论爆发","亚历山大城长老阿里乌主张：“曾有一时，子不存在”；主教亚历山大将其革除（约318–321）。","#e07a5f"),
        ("325","第一次尼西亚会议","君士坦丁召开，约250–318位主教（数字为传统说法）。采纳 homoousios（同质），附咒诅条款。亚他那修以执事身份随行。","#d4af37"),
@@ -190,7 +191,7 @@ def part3():
 
 # ---------- 四、亚他那修信经 ----------
 def part4():
-    b = CS.struct_at()
+    b = CW.pagecore('一体三位，一位二性：前半谈三一，后半谈基督，审判作结；42 点，11 组。','“三个是、三个不是、一个中心”＋“二性不混不分”','审判句（“必须持守”“永火”）的改革宗读法；各站编号差异（42/43/44）。')+CW.whole_at()+CS.struct_at()
     b += L2("at-tl","4.2","时间线：Quicunque 的来历",
       timeline([("296–373","亚他那修本人","亚历山大主教、尼西亚信仰的捍卫者；但他用希腊文写作，此信经是拉丁文，且用语晚于他的时代。","#5aa9e6"),
        ("430–451","基督论争论","以弗所会议（431）定罪涅斯多留；迦克墩会议（451）定罪欧迪奇，宣告“二性……不相混、不改变、不分割、不分离”。","#e07a5f"),
@@ -407,7 +408,7 @@ def sources():
       "<ul class='refs'><li>Philip Schaff, <i>The Creeds of Christendom</i>, vol. 1–2（1877；公有领域）。</li><li>J. N. D. Kelly, <i>Early Christian Creeds</i>（第3版，1972）；<i>The Athanasian Creed</i>（1964）。</li><li>John Calvin, <i>Institutes</i>（1559）II.16；Herman Bavinck, <i>Reformed Dogmatics</i> vol. 2–3。</li></ul>"
       + note("凡标“约”者，表示年代、作者、地点或礼仪习惯在学界或教会实践中存在不确定或差异。需要逐字核对信经与信条，请读第七至第十部分的 CCI 原文库。"))
     b += L2("src-ver","12.6","版本记录",
-      '<ul class="refs"><li><b>v20261014-8</b>：使徒信经 12 条、尼西亚信经 13 节、亚他那修信经 11 组，以及 BC、HC、Dort 各条目新增“🎯核心一句 · 🧠记忆钩 · 💡为何重要”；记忆页新增“核心速记总表”；使徒／尼西亚／亚他那修／比较／威斯敏斯特／BC／HC／Dort／记忆各页新增“参考站互证”（逐字引文构建时断言为 data/ref 抓取副本的子串，转述有标注，带原页链接）；新增三份信经的篇幅数据图、环形图与北美“今天谁在用”地图；亚他那修信经的编号差异补充：CCI 42 点，ccreformed.org 与 urcna.org 页 44 点，reformedbeginner.net 43 节。未能全文抓取：opc.org（箱子超时，仅 WebFetch 所选摘录）、prca.org（429，仅搜索摘录）。</li><li><b>v20261014-7</b>：使徒信经页 2.15、尼西亚信经页 3.x 新增“海德堡对应主日的经文参考”紧凑行（编号徽章行内连读，逐字取自 CCI，程序核对）；折叠箭头与小标签排版修整。</li><li><b>v20261014-6</b>：目录可拖拽调宽（鼠标/触摸/键盘，宽度存本机）；背诵版一条一行（小句连读，原文不改）；经文参考改为行内编号；新增 5.12 参考站互证（逐字引文程序核对）、5.13 数据对比（字数条与关键内容矩阵）；修复表格样式被误伤的问题。</li><li><b>v20261014-5</b>：二、三、四部分新增“结构目录”（使徒信经 12 条、尼西亚 13 节、亚他那修 42 点 11 组，各为三级标题，附 CCI 原文句、一句话与对照链接）；第七部分重做为背诵版（一行一句，原文不改，全显／首字提示／全遮／逐行跟读）；三项联合信条各部分改为三级标题，海德堡 52 主日用统一标题；记忆页增加可勾选速记表；动画、图标与排版细化。标题与“一句话”为本站学习用语，不是 CCI 原文。</li><li><b>v20261014-4</b>：多页结构；逐字收录三信经与三项联合信条；CCI 内容转述；参考网站；威斯敏斯特对照；三圈图、分层揭示、信条交叉引用图；进度记录。</li><li>v20261014-3：单页；亚他那修信经 CCI 全文；信条引文核对。</li><li>v20261014-2：纯中文、加深讲解、更多动画与图标。</li><li>v20261014-1：首版。</li></ul>')
+      '<ul class="refs"><li><b>v20261017-9 · GROKstudy</b>：全站字号体系（根字号 16.5–17.5px，正文行高 1.8，各类小字≥14px，地图与图表文字放大）；三份信经页顶部新增“本页一眼”，并各新增“0 导读区块”（整本圣经先行、圣经神学、圣约神学、欧陆改革宗读法、六个角度）；辅助区块（人物、补充解读、译本对照、经文依据、参考站互证等）默认折叠，目录跳转自动展开；仓库与部署域名改为“主题-日期-版本-GROKstudy”。</li><li><b>v20261014-8</b>：使徒信经 12 条、尼西亚信经 13 节、亚他那修信经 11 组，以及 BC、HC、Dort 各条目新增“🎯核心一句 · 🧠记忆钩 · 💡为何重要”；记忆页新增“核心速记总表”；使徒／尼西亚／亚他那修／比较／威斯敏斯特／BC／HC／Dort／记忆各页新增“参考站互证”（逐字引文构建时断言为 data/ref 抓取副本的子串，转述有标注，带原页链接）；新增三份信经的篇幅数据图、环形图与北美“今天谁在用”地图；亚他那修信经的编号差异补充：CCI 42 点，ccreformed.org 与 urcna.org 页 44 点，reformedbeginner.net 43 节。未能全文抓取：opc.org（箱子超时，仅 WebFetch 所选摘录）、prca.org（429，仅搜索摘录）。</li><li><b>v20261014-7</b>：使徒信经页 2.15、尼西亚信经页 3.x 新增“海德堡对应主日的经文参考”紧凑行（编号徽章行内连读，逐字取自 CCI，程序核对）；折叠箭头与小标签排版修整。</li><li><b>v20261014-6</b>：目录可拖拽调宽（鼠标/触摸/键盘，宽度存本机）；背诵版一条一行（小句连读，原文不改）；经文参考改为行内编号；新增 5.12 参考站互证（逐字引文程序核对）、5.13 数据对比（字数条与关键内容矩阵）；修复表格样式被误伤的问题。</li><li><b>v20261014-5</b>：二、三、四部分新增“结构目录”（使徒信经 12 条、尼西亚 13 节、亚他那修 42 点 11 组，各为三级标题，附 CCI 原文句、一句话与对照链接）；第七部分重做为背诵版（一行一句，原文不改，全显／首字提示／全遮／逐行跟读）；三项联合信条各部分改为三级标题，海德堡 52 主日用统一标题；记忆页增加可勾选速记表；动画、图标与排版细化。标题与“一句话”为本站学习用语，不是 CCI 原文。</li><li><b>v20261014-4</b>：多页结构；逐字收录三信经与三项联合信条；CCI 内容转述；参考网站；威斯敏斯特对照；三圈图、分层揭示、信条交叉引用图；进度记录。</li><li>v20261014-3：单页；亚他那修信经 CCI 全文；信条引文核对。</li><li>v20261014-2：纯中文、加深讲解、更多动画与图标。</li><li>v20261014-1：首版。</li></ul>')
     import c_refx
     b += c_refx.manifest_l2()
     return L1("sources","十二","来源与说明","library","哪些是逐字收录、哪些是转述、哪些在 CCI 上没有找到。", b)
@@ -466,7 +467,7 @@ def page(cur,body,extra_cls=""):
     desc=DESC.get(cur) or re.sub(r'<[^>]+>','',re.search(r'<p class="lead">(.*?)</p>',body).group(1))+" 三大公教会信经 · 欧陆改革宗深读。"
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title} {V}</title><meta name="description" content="{H.escape(desc[:150])}"><meta name="theme-color" content="#070d22"><script>try{{var s=document.documentElement.style,a=+localStorage.getItem("tec4.tw"),m=+localStorage.getItem("tec4.twm"),w=innerWidth;if(a>=220&&a<=Math.min(680,w*.6))s.setProperty("--tw",a+"px");if(m>=240&&m<=Math.min(560,w*.94))s.setProperty("--twm",m+"px")}}catch(e){{}}</script><link rel="stylesheet" href="assets/styles.css?v={V}"></head><body data-page="{cur}" data-total="{n.get(cur,0)}">
 <div id="prog"></div>{toc_html(cur)}<div id="tocgrip" role="separator" aria-orientation="vertical" aria-label="拖动调整目录宽度（左右方向键微调，双击还原）" title="拖动调整目录宽度；双击还原" tabindex="0"></div><button id="tocbtn" class="fab" aria-label="显示目录" aria-controls="toc" type="button">☰ 目录</button>
-<main id="main">{tabs(cur)}{'' if cur=='index' else f'<p class="readchip">本页已读 <b id="pgread">0</b> / {n.get(cur,0)} 个小节（仅存于本机浏览器）</p>'}{body}{pager(cur)}<footer class="foot"><p>三大公教会信经 · 欧陆改革宗深读 · <b>{V}</b></p><p>以圣经为最高权威；信经与信条为从属标准。信经与信条原文取自 <a href="https://ccifellowship.org/books/book-of-praise" target="_blank" rel="noopener">CCI《赞美手册》中文版</a>。</p></footer></main>
+<main id="main">{tabs(cur)}{'' if cur=='index' else f'<p class="readchip">本页已读 <b id="pgread">0</b> / {n.get(cur,0)} 个小节（仅存于本机浏览器）</p>'}{'<div class="secbar"><b>🎯 阅读建议</b><span>先读彩色的核心、重点、难点；标有“辅助”的区块默认折叠，需要时再展开。</span><button class="btn ghost" type="button" data-secall="open">展开全部辅助</button><button class="btn ghost" type="button" data-secall="close">收起全部辅助</button></div>' if 'class="secd"' in body else ''}{body}{pager(cur)}<footer class="foot"><p>三大公教会信经 · 欧陆改革宗深读 · <b>{V}</b></p><p>以圣经为最高权威；信经与信条为从属标准。信经与信条原文取自 <a href="https://ccifellowship.org/books/book-of-praise" target="_blank" rel="noopener">CCI《赞美手册》中文版</a>。</p></footer></main>
 <script>window.TEC={json.dumps({"v":V,"pages":[{"k":k,"f":f,"t":t,"n":n.get(k,0)} for k,f,t,_ in PAGES[1:]]},ensure_ascii=False)}</script>
 <script src="assets/app.js?v={V}" defer></script></body></html>'''
 
