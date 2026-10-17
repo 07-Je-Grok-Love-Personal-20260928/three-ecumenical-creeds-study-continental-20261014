@@ -353,3 +353,4 @@ table.cmp td{vertical-align:top}
 .rfd[open] .refs2.rq{animation:rfin .35s both}
 @keyframes rfin{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.rfd[open] .refs2.rq{animation:none}.rfd>summary::after,.rfd>summary .rfi{transition:none}}
+@media(max-width:600px){.flow .fs{flex:0 0 auto}}
