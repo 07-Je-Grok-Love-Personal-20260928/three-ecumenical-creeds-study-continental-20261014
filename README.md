@@ -1,12 +1,14 @@
-# 三大公教会信经 · 欧陆改革宗深读（v20261014-8）
+# 三大公教会信经 · 欧陆改革宗深读（v20261017-9）
 
 使徒信经、尼西亚信经、亚他那修信经，以及三项联合信条（比利时信条、海德堡要理问答、多特信经）的中文综合学习网站（欧陆改革宗视角）。
 
-## 在线访问（3 个部署）
-- GitHub Pages：https://07-je-grok-love-personal-20260928.github.io/three-ecumenical-creeds-study-continental-20261014/
-- Netlify：https://three-ecumenical-creeds-study-continental-20261014.netlify.app/
-- Surge：https://three-ecumenical-creeds-study-continental-20261014.surge.sh/
-- 仓库：https://github.com/07-Je-Grok-Love-Personal-20260928/three-ecumenical-creeds-study-continental-20261014
+## 在线访问（v20261017-9 · GROKstudy，3 个部署）
+- GitHub Pages：https://07-je-grok-love-personal-20260928.github.io/three-ecumenical-creeds-study-continental-20261017-v9-GROKstudy/
+- Netlify：https://three-ecumenical-creeds-study-continental-20261017-v9-grokstudy.netlify.app/
+- Surge：https://three-ecumenical-creeds-study-continental-20261017-v9-grokstudy.surge.sh/
+- 仓库：https://github.com/07-Je-Grok-Love-Personal-20260928/three-ecumenical-creeds-study-continental-20261017-v9-GROKstudy
+
+旧版本（仍在线，保留作为前一版本 v20261014-8）：[Netlify](https://three-ecumenical-creeds-study-continental-20261014.netlify.app/) · [Surge](https://three-ecumenical-creeds-study-continental-20261014.surge.sh/)。旧的 GitHub Pages 地址随仓库更名已失效。
 
 ## 页面（13 页，共用可隐藏目录与统一编号）
 | 页面 | 内容 |
