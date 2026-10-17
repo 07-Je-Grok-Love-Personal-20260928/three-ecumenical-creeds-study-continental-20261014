@@ -2,6 +2,7 @@
 """三份信经研读页的“结构与目录”小节：每条/节/组一个三级标题，含一句话、CCI 原文句（逐字）与对照链接。"""
 import json,html as H
 from core import *
+from c_core import AP_CORE,NI_CORE,AT_CORE,core_strip
 import creedlib as CL
 def _C(): return json.load(open("data/creeds.json",encoding="utf-8"))
 def hc(*ns): return "、".join(f'<a href="#ld{n}">主日{n}</a>' for n in ns)
@@ -42,9 +43,9 @@ AT_G={"A":("信仰有边界：必须持守大公信仰。第2点的严厉措辞�
 "I":("一位基督：不是神性变为人性，乃在神性中取了人性；不是混合，是位格的联合；灵与肉的类比。",hc(18),bcl(19)),
 "J":("受难、降在阴间、复活、升天、再来、审判；行善者得永生，作恶者入永火。",hc(15,16,17,19),bcl(37)),
 "K":("收束：这是大公信仰——与第1–2点首尾呼应。",hc(8),bcl(9))}
-def _block(txt,link,gist,hcs,bcs,kw=""):
-    return (f'<p><i class="lb">CCI 原文</i><q class="cq">{H.escape(txt,quote=False)}</q></p>'
-            f'<p><i class="lb">一句话</i>{gist}</p><p class="sxr"><i class="lb">对照</i>{hcs}；{bcs}</p>'
+def _block(txt,link,gist,hcs,bcs,kw="",core=None):
+    return (f'<p><i class="lb">CCI 原文</i><q class="cq">{H.escape(txt,quote=False)}</q></p>'+(core_strip(core) if core else "")+
+                        f'<p><i class="lb">一句话</i>{gist}</p><p class="sxr"><i class="lb">对照</i>{hcs}；{bcs}</p>'
             f'<p class="lk"><a href="{link}">背诵版：一行一句 →</a></p>')
 def struct_ap():
     C=_C(); T=CL.apostles(C); x='<p>十二条、三段（父—子—灵）：每条一个三级标题（编号与背诵版相同）。<b>CCI 原文</b>为逐字句，<b>一句话</b>与对照为本站撰写。点“背诵版”到一行一句的版本。</p>'
@@ -52,7 +53,7 @@ def struct_ap():
         x+=f'<h4 class="qh pdv">第{pn}段 · {pt}</h4>'
         for n in nos:
             t,ico,sub=CL.AP_TITLES[n]; g,h,b=AP_G[n]
-            x+=L3(f"apx-{n}",f"第{n}条 · {t}",_block(T[n].strip(),f"creeds.html#ap-a{n}",g,h,b),ico,sub=sub,cls="ldc")
+            x+=L3(f"apx-{n}",f"第{n}条 · {t}",_block(T[n].strip(),f"creeds.html#ap-a{n}",g,h,b,core=AP_CORE[n]),ico,sub=sub,cls="ldc")
     return L2("ap-struct","2.1","结构目录：12 条 · 3 段",x)
 def struct_ni():
     C=_C(); T=CL.nicene(C); x='<p>CCI 把尼西亚信经分为 7 段；本站再按句读拆为 13 节、4 段（父—子—灵—教会与盼望），每节一个三级标题。</p>'
@@ -60,7 +61,7 @@ def struct_ni():
         x+=f'<h4 class="qh pdv">第{pn}段 · {pt}</h4>'
         for n in nos:
             t,ico,sub=CL.NI_TITLES[n]; g,h,b=NI_G[n]
-            x+=L3(f"nix-{n}",f"第{n}节 · {t}",_block(T[n].strip(),f"creeds.html#ni-a{n}",g,h,b),ico,sub=sub,cls="ldc")
+            x+=L3(f"nix-{n}",f"第{n}节 · {t}",_block(T[n].strip(),f"creeds.html#ni-a{n}",g,h,b,core=NI_CORE[n]),ico,sub=sub,cls="ldc")
     return L2("ni-struct","3.1","结构目录：13 节 · 4 段（对应 CCI 7 段）",x)
 def struct_at():
     C=_C(); T=CL.athanasian(C); x='<p>CCI 正文共 42 点；本站按主题分为 11 组，两大部分（第3–28点论三位一体；第29–41点论基督）加序与结语。每组一个三级标题。</p>'
@@ -69,5 +70,5 @@ def struct_at():
         for g in gs:
             nm,lo,hi,gi=CL.AT_GROUPS[g]; gist,h,b=AT_G[g]
             txt=" ".join(f"{k}) {T[k]}" for k in range(lo,hi+1))
-            x+=L3(f"atx-{g}",f"第{lo}–{hi}点 · {nm}" if hi!=lo else f"第{lo}点 · {nm}",_block(txt,f"creeds.html#at-g{g}",gist,h,b),gi,sub=f"{hi-lo+1} 点",cls="ldc")
+            x+=L3(f"atx-{g}",f"第{lo}–{hi}点 · {nm}" if hi!=lo else f"第{lo}点 · {nm}",_block(txt,f"creeds.html#at-g{g}",gist,h,b,core=AT_CORE[g]),gi,sub=f"{hi-lo+1} 点",cls="ldc")
     return L2("at-struct","4.1","结构目录：42 点 · 11 组",x)

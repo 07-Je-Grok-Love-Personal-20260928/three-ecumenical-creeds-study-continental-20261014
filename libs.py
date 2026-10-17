@@ -4,6 +4,7 @@
 import json,re,html as H
 from core import *
 from c_titles import HC52
+from c_core import HC_CORE,BC_CORE,DORT_CORE,core_strip
 import creedlib as CL
 def J(n): return json.load(open(f"data/{n}.json",encoding="utf-8"))
 CCI="https://ccifellowship.org"
@@ -106,8 +107,10 @@ def part_bc():
     for gid,num,gt,lo,hi in BCG:
         x=""
         for a in D["articles"][lo-1:hi]:
-            x+=L3(f'bc-{a["n"]}',H.escape(a["title"]),blocks_html(a["blocks"])+f'<p class="src">{src_link(a["url"])}</p>',"scroll",cls="art tx")
+            x+=L3(f'bc-{a["n"]}',H.escape(a["title"]),core_strip(BC_CORE[a["n"]])+blocks_html(a["blocks"])+f'<p class="src">{src_link(a["url"])}</p>',"scroll",cls="art tx")
         b += L2(gid,num,gt,x)
+    import c_refx
+    b += c_refx.l2('bc')
     return L1("bc","八","比利时信条全文（37条）","scroll","德布利（Guido de Brès）所著；CCI 中文版逐字收录。", b)
 
 # ===== 九、海德堡 =====
@@ -136,9 +139,11 @@ def part_hc():
         x=""
         for ld in lds[lo-1:hi]:
             n=ld["n"]
-            x+=L3(f'ld{n}',f"主日{n} · {HC52[n][0]}",blocks_html(ld["blocks"])+f'<p class="src">{src_link(ld["url"])} · {src_link(CCI+"/books/i-belong/"+ibref(n),"CCI《我属于》学习课程")}</p>',HC52[n][3],sub=f"问{rng[n][0]}–{rng[n][1]}",cls="art tx ld")
+            x+=L3(f'ld{n}',f"主日{n} · {HC52[n][0]}",core_strip(HC_CORE[n])+blocks_html(ld["blocks"])+f'<p class="src">{src_link(ld["url"])} · {src_link(CCI+"/books/i-belong/"+ibref(n),"CCI《我属于》学习课程")}</p>',HC52[n][3],sub=f"问{rng[n][0]}–{rng[n][1]}",cls="art tx ld")
         b += L2(gid,num,gt,x)
     b += note("<b>分组说明：</b>“第一部/第二部/第三部”及“子神和我们的得赎”“圣灵神和我们的成圣”“我们得称为义”“圣言与圣礼”“圣洗礼”“圣餐”“十诫”“祷告”等标题均为 CCI 页面的目录名；“主日5–10”一组 CCI 未另立标题，本站按其内容（中保、信心、使徒信经、三一、创造与护理）命名。")
+    import c_refx
+    b += c_refx.l2('hc')
     return L1("hc","九","海德堡要理问答全文（129问）","scroll","乌尔西努与俄利维亚努（1563）；CCI 中文版逐字收录，含 52 主日。", b)
 
 # ===== 十、多特 =====
@@ -158,5 +163,7 @@ def part_dort():
             err = it["title"]=="错谬反驳"
             lab = "驳" if err else str(it["n"])
             x+=L3(f'dort-{h["id"]}-{it["n"]}',H.escape(it["title"]),blocks_html(it["blocks"])+f'<p class="src">{src_link(it["url"])}</p>',"alert" if err else "scroll",cls="art tx"+(" err" if err else ""))
-        b += L2(f"dt-{h['id']}",num,h["title"]+f'（项{h["num"]}）',x+f'<p class="src">{src_link(h["url"],"CCI 本项总页")}</p>')
+        b += L2(f"dt-{h['id']}",num,h["title"]+f'（项{h["num"]}）',core_strip(DORT_CORE[h["id"]])+x+f'<p class="src">{src_link(h["url"],"CCI 本项总页")}</p>')
+    import c_refx
+    b += c_refx.l2('dort')
     return L1("dort","十","多特信经全文（四项教义）","scroll","1618–1619 多特大会；CCI 中文版逐字收录，含正反两面（教义与错谬反驳）。", b)
