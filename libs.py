@@ -3,6 +3,8 @@
 正文全部由 data/*.json（逐字取自 ccifellowship.org《赞美手册》中文版）生成，不改写。"""
 import json,re,html as H
 from core import *
+from c_titles import HC52
+import creedlib as CL
 def J(n): return json.load(open(f"data/{n}.json",encoding="utf-8"))
 CCI="https://ccifellowship.org"
 def fn(s): return re.sub(r"⟦(\d+)⟧",r'<sup class="fn">\1</sup>',H.escape(s,quote=False))
@@ -38,25 +40,39 @@ def part_creeds():
       f'<p class="ex">{H.escape(C["index_intro"])}</p><p class="src">{src_link(C["index_url"],"CCI《赞美手册》普世信经总目 ccifellowship.org/books/book-of-praise/creeds")}</p>'
       + exact_note('上面这一段同为 CCI 原文。')
       + '<div class="grid g3">'
-      + ''.join(f'<a class="pg" href="#{i}" style="--c:{c}"><b>{t}</b><small>{s}</small></a>' for i,t,s,c in [("cr-ap","使徒信经","12 句 · 西方 · 洗礼","#81b29a"),("cr-ni","尼西亚信经","尼西亚—君士坦丁堡 · 东西共用","#e07a5f"),("cr-at","亚他那修信经","42 点（CCI 编号）","#5aa9e6")])
+      + ''.join(f'<a class="pg" href="#{i}" style="--c:{c}"><b>{t}</b><small>{s}</small></a>' for i,t,s,c in [("cr-ap","使徒信经","12 条 · 3 段 · 西方 · 洗礼","#81b29a"),("cr-ni","尼西亚信经","13 节 · 4 段 · 东西共用","#e07a5f"),("cr-at","亚他那修信经","42 点 · 11 组（CCI 编号）","#5aa9e6")])
       + '</div>'
-      + key('<b>本页分两层：</b>①“原文”＝CCI 页面的逐字文本；②“诵读版”＝同一文本按句分组、带颜色标题和遮盖工具（文字不变，只是排版）。深度讲解见第二、三、四部分。')
+      + key('<b>每部信经两层：</b>①<b>背诵版</b>——按条（使徒信经 12 条）、按节（尼西亚 13 节）、按主题分组（亚他那修 11 组），一行一句，带编号、图标与背诵工具（全显／首字提示／全遮／逐行跟读）；②<b>CCI 整段原文</b>——每部信经最后一个小节，逐字收录。两层文字完全相同（tools/verify_recite.py 核对）。深度讲解见第二、三、四部分。')
       + note('三项联合信条的原文库见第八（比利时信条）、第九（海德堡要理问答）、第十（多特信经）部分。'))
-    def block(id,num,key_,ztitle,reader_html_fn):
+    def block(key_,ztitle):
         d=C[key_]
-        x=f'<h4 class="qh">CCI 导言（原文）</h4><p class="ex">{H.escape(d["intro"])}</p><h4 class="qh">{H.escape(ztitle)}（原文）</h4>'+"".join(f'<p class="ex cr">{H.escape(p)}</p>' for p in d["paras"])+f'<p class="src">{src_link(d["url"])}</p>'
-        return x
-    b += L2("cr-ap","7.2","使徒信经",block("cr-ap","7.2","apostles","使徒信经",None)
-        + note("CCI 中文本把“降在阴间”接在“被埋葬”之后（见原文）；本站诵读版按传统十二句分节。"))
-    b += L2("cr-ni","7.3","尼西亚信经（又称尼西亚—君士坦丁堡信经）",block("cr-ni","7.3","nicene","尼西亚信经",None)
-        + note("CCI 文本含“圣灵……从父和子而出”（西方文本，含 filioque）；CCI 导言自己说明东方教会至今不接受这一句。"))
-    b += L2("cr-at","7.4","亚他那修信经",block("cr-at","7.4","athanasian","亚他那修信经",None)
-        + hard("<b>编号差异（已核对）：</b>CCI 导言说“第二部分包括第29-43点”，但其正文编号只到第42点（第42点是“这是大公信仰……阿们”）。本站诵读版按 CCI 正文 42 点。URCNA（urcna.org/athanasian）的英文版分为 44 节；改革宗初学者网站（reformedbeginner.net）亦为 44 节——不同教会编号不同，文字内容相同，引用时请注明所用版本。"))
-    src='华人改革宗《赞美手册》（Book of Praise）中文版，<a href="https://ccifellowship.org/books/book-of-praise/creeds" target="_blank" rel="noopener">ccifellowship.org/books/book-of-praise/creeds</a>。'
-    b += reader("rd-ap","7.5","诵读版：使徒信经",APOSTLES_ZH,[("圣父与创造","#5aa9e6",1,1),("圣子与救赎","#d4af37",2,7),("圣灵、教会与终末","#81b29a",8,12)],src+"本站按传统十二句分节排版。","三段对应父、子、圣灵。")
-    b += reader("rd-ni","7.6","诵读版：尼西亚信经（尼西亚—君士坦丁堡，381）",NICENE_ZH,[("圣父","#5aa9e6",1,1),("圣子：永恒的神","#d4af37",2,3),("圣子：为我们成为人","#e0a85f",4,7),("圣灵","#81b29a",8,9),("教会、洗礼与盼望","#a78bfa",10,12)],src+"采西方文本（含“和子”），分十二句。","受生却非被造、与父同质是承重句。")
-    b += reader("rd-at","7.7","诵读版：亚他那修信经（CCI 编号 42 点）",ATH_ZH,[("门槛：大公信仰","#e07a5f",1,2),("三一：不混不分","#5aa9e6",3,6),("三一：属性同等","#6bb8d6",7,20),("三一：起源与次序","#a78bfa",21,28),("道成肉身：一位二性","#d4af37",29,37),("救恩工作与终末","#81b29a",38,41),("收束：这是大公信仰","#e07a5f",42,42)],src+"编号按 CCI 正文。","第3–28点论三一；第29–37点论基督；第38–41点论救恩工作与审判。")
-    return L1("creeds","七","三大信经全文与诵读","scroll","CCI《赞美手册》中文版原文逐字收录，并提供按句分组的诵读工具。", b)
+        return f'<h4 class="qh">CCI 导言（原文）</h4><p class="ex">{H.escape(d["intro"])}</p><h4 class="qh">{H.escape(ztitle)}（原文）</h4>'+"".join(f'<p class="ex cr">{H.escape(p)}</p>' for p in d["paras"])+f'<p class="src">{src_link(d["url"])}</p>'
+    def parted(parts,titles,texts,pref):
+        x=CL.TOOL+'<div class="rc" data-recite>'
+        for pn,pt,pico,nos in parts:
+            x+=f'<h4 class="rpart">{ic(pico,"ic sm")}第{pn}段 · {pt}</h4>'
+            for n in nos:
+                t,ico,sub=titles[n]
+                x+=L3(f"{pref}-a{n}",t,CL.art(n,CL.lines(texts[n])),ico,sub=sub,cls="ldc rcs")
+        return x+'</div>'
+    x=parted(CL.AP_PARTS,CL.AP_TITLES,CL.apostles(C),"ap")
+    x+=L3("ap-txt","CCI 导言与原文整段（逐字）",block("apostles","使徒信经")+note("CCI 中文本把“降在阴间”接在“被埋葬”之后（见原文）。"),"scroll",cls="tx")
+    b += L2("cr-ap","7.2","使徒信经 · 12 条 · 3 段（背诵版）",x)
+    x=parted(CL.NI_PARTS,CL.NI_TITLES,CL.nicene(C),"ni")
+    x+=L3("ni-txt","CCI 导言与原文整段（逐字）",block("nicene","尼西亚信经")+note("CCI 文本含“圣灵……从父和子而出”（西方文本，含 filioque）；CCI 导言自己说明东方教会至今不接受这一句。"),"scroll",cls="tx")
+    b += L2("cr-ni","7.3","尼西亚信经 · 13 节 · 4 段（背诵版，对应 CCI 7 段）",x)
+    at=CL.athanasian(C)
+    x=CL.TOOL+'<div class="rc" data-recite>'
+    for pn,pt,pico,gs in CL.AT_PARTS:
+        x+=f'<h4 class="rpart">{ic(pico,"ic sm")}{pn} · {pt}</h4>'
+        for g in gs:
+            nm,lo,hi,gi=CL.AT_GROUPS[g]
+            body="".join(CL.art(k,CL.lines(at[k])) for k in range(lo,hi+1))
+            x+=L3(f"at-g{g}",f"第{lo}–{hi}点 · {nm}" if hi!=lo else f"第{lo}点 · {nm}",body,gi,sub=f"{hi-lo+1} 点",cls="ldc rcs")
+    x+='</div>'
+    x+=L3("at-txt","CCI 导言与原文整段（逐字）",block("athanasian","亚他那修信经")+hard("<b>编号差异（已核对）：</b>CCI 导言说“第二部分包括第29-43点”，但其正文编号只到第42点（第42点是“这是大公信仰……阿们”）。本站背诵版按 CCI 正文 42 点。URCNA（urcna.org/athanasian）的英文版分为 44 节；改革宗初学者网站（reformedbeginner.net）亦为 44 节——不同教会编号不同，文字内容相同，引用时请注明所用版本。"),"scroll",cls="tx")
+    b += L2("cr-at","7.4","亚他那修信经 · 42 点 · 11 组（背诵版）",x)
+    return L1("creeds","七","三大信经全文与背诵版","scroll","CCI《赞美手册》中文版原文逐字收录；背诵版一行一句，按条／节／主题分组。", b)
 
 # ===== 八、比利时信条 =====
 BCG=[("bc-g1","8.2","第1–7条：神与启示（本站分组）",1,7),("bc-g2","8.3","第8–11条：三位一体（本站分组）",8,11),("bc-g3","8.4","第12–15条：创造、护理、人与原罪（本站分组）",12,15),("bc-g4","8.5","第16–26条：拣选与基督的救赎（本站分组）",16,26),("bc-g5","8.6","第27–32条：教会（本站分组）",27,32),("bc-g6","8.7","第33–35条：圣礼（本站分组）",33,35),("bc-g7","8.8","第36–37条：政府与末日审判（本站分组）",36,37)]
@@ -69,7 +85,7 @@ def part_bc():
     for gid,num,gt,lo,hi in BCG:
         x=""
         for a in D["articles"][lo-1:hi]:
-            x+=f'<article class="art" id="bc-{a["n"]}"><h4 class="ah"><span class="an">{a["n"]}</span>{H.escape(a["title"])}</h4>{blocks_html(a["blocks"])}<p class="src">{src_link(a["url"])}</p></article>'
+            x+=L3(f'bc-{a["n"]}',H.escape(a["title"]),blocks_html(a["blocks"])+f'<p class="src">{src_link(a["url"])}</p>',"scroll",cls="art tx")
         b += L2(gid,num,gt,x)
     return L1("bc","八","比利时信条全文（37条）","scroll","德布利（Guido de Brès）所著；CCI 中文版逐字收录。", b)
 
@@ -99,7 +115,7 @@ def part_hc():
         x=""
         for ld in lds[lo-1:hi]:
             n=ld["n"]
-            x+=f'<article class="art ld" id="ld{n}"><h4 class="ah"><span class="an">主日{n}</span>问{rng[n][0]}–{rng[n][1]}</h4>{blocks_html(ld["blocks"])}<p class="src">{src_link(ld["url"])} · {src_link(CCI+"/books/i-belong/"+ibref(n),"CCI《我属于》学习课程")}</p></article>'
+            x+=L3(f'ld{n}',f"主日{n} · {HC52[n][0]}",blocks_html(ld["blocks"])+f'<p class="src">{src_link(ld["url"])} · {src_link(CCI+"/books/i-belong/"+ibref(n),"CCI《我属于》学习课程")}</p>',HC52[n][3],sub=f"问{rng[n][0]}–{rng[n][1]}",cls="art tx ld")
         b += L2(gid,num,gt,x)
     b += note("<b>分组说明：</b>“第一部/第二部/第三部”及“子神和我们的得赎”“圣灵神和我们的成圣”“我们得称为义”“圣言与圣礼”“圣洗礼”“圣餐”“十诫”“祷告”等标题均为 CCI 页面的目录名；“主日5–10”一组 CCI 未另立标题，本站按其内容（中保、信心、使徒信经、三一、创造与护理）命名。")
     return L1("hc","九","海德堡要理问答全文（129问）","scroll","乌尔西努与俄利维亚努（1563）；CCI 中文版逐字收录，含 52 主日。", b)
@@ -120,6 +136,6 @@ def part_dort():
         for it in h["items"]:
             err = it["title"]=="错谬反驳"
             lab = "驳" if err else str(it["n"])
-            x+=f'<article class="art{" err" if err else ""}" id="dort-{h["id"]}-{it["n"]}"><h4 class="ah"><span class="an">{lab}</span>{H.escape(it["title"])}</h4>{blocks_html(it["blocks"])}<p class="src">{src_link(it["url"])}</p></article>'
+            x+=L3(f'dort-{h["id"]}-{it["n"]}',H.escape(it["title"]),blocks_html(it["blocks"])+f'<p class="src">{src_link(it["url"])}</p>',"alert" if err else "scroll",cls="art tx"+(" err" if err else ""))
         b += L2(f"dt-{h['id']}",num,h["title"]+f'（项{h["num"]}）',x+f'<p class="src">{src_link(h["url"],"CCI 本项总页")}</p>')
     return L1("dort","十","多特信经全文（四项教义）","scroll","1618–1619 多特大会；CCI 中文版逐字收录，含正反两面（教义与错谬反驳）。", b)
