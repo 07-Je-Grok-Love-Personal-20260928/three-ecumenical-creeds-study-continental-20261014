@@ -270,3 +270,6 @@ body{font-feature-settings:"palt" 0;letter-spacing:.012em}
 .l3 .lb{display:inline-block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:#0b1330;background:var(--gold2,#e9c46a);border-radius:999px;padding:1px 9px;margin-right:8px;vertical-align:1px}
 .l3 .sxr,.l3 .lk{margin:.3rem 0;overflow-wrap:anywhere}.l3 .lk a{color:var(--gold2,#e9c46a);font-weight:600;text-decoration:none}.l3 .lk a:hover{text-decoration:underline}
 .pdv{margin:1.1rem 0 .5rem}
+/* 本站原有 .rt（绝对定位）与背诵行 .rt 同名：在背诵列表内还原为行内文字 */
+.rls li .rt{position:static;inset:auto;display:inline;place-content:normal;text-align:inherit}
+.l3 p.lk a{color:var(--gold2,#e9c46a)}
