@@ -1,4 +1,4 @@
-# 三大公教会信经 · 欧陆改革宗深读（v20261014-5）
+# 三大公教会信经 · 欧陆改革宗深读（v20261014-6）
 
 使徒信经、尼西亚信经、亚他那修信经，以及三项联合信条（比利时信条、海德堡要理问答、多特信经）的中文综合学习网站（欧陆改革宗视角）。
 
@@ -36,6 +36,10 @@
 python3 build.py            # 生成全部 *.html（需要 Python 3）
 python3 tools/check_links.py   # 站内链接/锚点/目录检查
 python3 tools/verify_exact.py  # 原文一致性检查
+python3 tools/verify_recite.py creeds.html   # 背诵版（一条一行）与 CCI 原文逐字一致
+python3 tools/verify_refs.py   # 经文参考行内列表 == CCI 数据
+python3 tools/qa.py [--nojs] [--rm]   # Playwright 五个宽度
+python3 tools/qa_toc.py hc.html --shots   # 目录拖拽/键盘/触摸/持久化
 python3 tools/audit_all.py more.py   # 引文核对（需本地爬取缓存）
 ```
 静态站，无需构建；无 JavaScript 时内容全部可见；遵守 `prefers-reduced-motion`。
